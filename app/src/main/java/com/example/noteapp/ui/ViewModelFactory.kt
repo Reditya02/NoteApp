@@ -8,7 +8,7 @@ import com.example.noteapp.ui.add.AddViewModel
 import com.example.noteapp.ui.detail.DetailViewModel
 import com.example.noteapp.ui.home.HomeViewModel
 
-class ViewModelFactory (private val dao: NoteDao) :
+class ViewModelFactory (dao: NoteDao) :
     ViewModelProvider.Factory {
 
     private val repository = Repository(dao)

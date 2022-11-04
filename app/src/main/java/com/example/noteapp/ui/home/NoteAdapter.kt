@@ -1,14 +1,10 @@
 package com.example.noteapp.ui.home
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.noteapp.R
 import com.example.noteapp.data.Note
 import com.example.noteapp.databinding.CardNoteBinding
-import kotlin.math.log
 
 class NoteAdapter(
     private val listNote: List<Note>,

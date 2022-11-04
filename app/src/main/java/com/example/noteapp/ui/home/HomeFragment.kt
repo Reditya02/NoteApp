@@ -1,19 +1,16 @@
 package com.example.noteapp.ui.home
 
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieDrawable
 import com.example.noteapp.R
-import com.example.noteapp.data.*
+import com.example.noteapp.data.LoginPreferences
+import com.example.noteapp.data.Note
+import com.example.noteapp.data.NoteAppDatabase
 import com.example.noteapp.databinding.FragmentHomeBinding
 import com.example.noteapp.ui.ViewModelFactory
 

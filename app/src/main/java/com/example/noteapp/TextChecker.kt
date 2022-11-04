@@ -1,6 +1,5 @@
 package com.example.noteapp
 
-import android.util.Log
 import android.util.Patterns.EMAIL_ADDRESS
 
 object TextChecker {

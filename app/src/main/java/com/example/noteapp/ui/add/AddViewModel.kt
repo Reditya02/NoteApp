@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noteapp.TextChecker
 import com.example.noteapp.TextMessage
-import com.example.noteapp.data.Database
 import com.example.noteapp.data.Note
 import com.example.noteapp.data.Repository
 import kotlinx.coroutines.launch
@@ -26,10 +25,6 @@ class AddViewModel(private val repository: Repository) : ViewModel() {
         viewModelScope.launch {
             repository.addNote(note)
         }
-    }
-
-    fun getId(): Int {
-        return Database.listNote.size
     }
 
     fun checkEdtTitle(title: String) {

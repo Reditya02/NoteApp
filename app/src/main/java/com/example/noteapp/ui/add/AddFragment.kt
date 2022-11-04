@@ -1,21 +1,18 @@
 package com.example.noteapp.ui.add
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.TextMessage
 import com.example.noteapp.data.Note
 import com.example.noteapp.data.NoteAppDatabase
-import com.example.noteapp.data.Repository
 import com.example.noteapp.databinding.FragmentAddBinding
 import com.example.noteapp.ui.ViewModelFactory
-import com.example.noteapp.ui.home.HomeViewModel
 
 class AddFragment : Fragment() {
 
