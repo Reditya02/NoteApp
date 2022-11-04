@@ -1,5 +1,6 @@
 package com.example.noteapp.ui.home
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.lottie.LottieDrawable
 import com.example.noteapp.R
 import com.example.noteapp.data.*
 import com.example.noteapp.databinding.FragmentHomeBinding
@@ -52,25 +54,12 @@ class HomeFragment : Fragment() {
 
         loginPreferences = LoginPreferences(requireContext())
 
-//        val factory = ViewModelFactory.getInstance(requireContext())
-//        val viewModel = ViewModelProvider(this, factory!!)[HomeViewModel::class.java]
-
-        Log.d("Reditya", "in home")
-
         binding.apply {
             viewModel.apply {
-                //getDummyData()
                 getData()
                 listNote.observe(viewLifecycleOwner) {
                     list = it
-                    if (list.isEmpty()) {
-                        tvEmpty.visibility = View.VISIBLE
-                        recyclerView.visibility = View.GONE
-                    } else {
-                        tvEmpty.visibility = View.GONE
-                        recyclerView.visibility = View.VISIBLE
-                        showRecycler()
-                    }
+                    isEmpty()
                 }
             }
 
@@ -94,11 +83,28 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun <T : ViewModel> T.createFactory(): ViewModelProvider.Factory {
-        val viewModel = this
-        return object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T = viewModel as T
+    private fun isEmpty() {
+        binding.apply {
+            if (list.isEmpty()) {
+                tvEmpty.visibility = View.VISIBLE
+                recyclerView.visibility = View.GONE
+                animEmpty.apply {
+                    visibility = View.VISIBLE
+                    setAnimation(R.raw.empty_box)
+                    repeatCount = LottieDrawable.INFINITE
+                    playAnimation()
+                }
+
+            } else {
+                tvEmpty.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+                animEmpty.apply {
+                    visibility = View.GONE
+                    pauseAnimation()
+                }
+                showRecycler()
+            }
+
         }
     }
 
