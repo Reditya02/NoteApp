@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.lottie.LottieDrawable
 import com.example.noteapp.R
 import com.example.noteapp.data.LoginPreferences
-import com.example.noteapp.data.Note
-import com.example.noteapp.data.NoteAppDatabase
+import com.example.noteapp.data.model.Note
 import com.example.noteapp.databinding.FragmentHomeBinding
 import com.example.noteapp.ui.ViewModelFactory
 
@@ -37,8 +36,7 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
 
         val application = requireNotNull(this.activity).application
-        val dao = NoteAppDatabase.getDatabase(application).noteDao()
-        val factory = ViewModelFactory(dao)
+        val factory = ViewModelFactory(application)
 
         viewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
 
@@ -53,7 +51,7 @@ class HomeFragment : Fragment() {
 
         binding.apply {
             viewModel.apply {
-                getData()
+                getData(loginPreferences.loginEmail)
                 listNote.observe(viewLifecycleOwner) {
                     list = it
                     isEmpty()

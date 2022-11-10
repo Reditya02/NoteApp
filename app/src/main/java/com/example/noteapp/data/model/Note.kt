@@ -1,4 +1,4 @@
-package com.example.noteapp.data
+package com.example.noteapp.data.model
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
@@ -17,5 +17,8 @@ data class Note(
     var title: String = "",
 
     @ColumnInfo(name = "description")
-    var description: String = ""
+    var description: String = "",
+
+    @ColumnInfo(name = "owner_email")
+    val ownerEmail: String
 ) : Parcelable

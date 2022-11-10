@@ -2,33 +2,43 @@ package com.example.noteapp.ui.login
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.noteapp.data.LoginPreferences
 import com.example.noteapp.TextMessage
+import com.example.noteapp.data.LoginPreferences
+import com.example.noteapp.data.model.User
 import com.example.noteapp.databinding.FragmentLoginBinding
+import com.example.noteapp.ui.ViewModelFactory
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: LoginViewModel by viewModels()
+    private lateinit var viewModel: LoginViewModel
 
     private lateinit var loginPreferences: LoginPreferences
 
     private var isEmailValid = false
     private var isPasswordValid = false
 
+    private var user = User()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
+
+        val application = requireNotNull(this.activity).application
+        val factory = ViewModelFactory(application)
+
+        viewModel = ViewModelProvider(this, factory)[LoginViewModel::class.java]
+
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -55,6 +65,15 @@ class LoginFragment : Fragment() {
             }
         }
 
+    }
+
+    private fun createUser() {
+        binding.apply {
+            user.apply {
+                email = edtEmail.text.toString()
+                password = edtPassword.text.toString()
+            }
+        }
     }
 
     private fun checkLogin() {
@@ -95,10 +114,17 @@ class LoginFragment : Fragment() {
     }
 
     private fun login() {
-        if (isEmailValid && isPasswordValid) {
-            loginPreferences.isLogin = true
-            val toHomeFragment = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-            findNavController().navigate(toHomeFragment)
+        createUser()
+        viewModel.apply {
+            checkLogin(user)
+            isCanLogin.observe(viewLifecycleOwner) {
+                if (isEmailValid && isPasswordValid && it) {
+                    loginPreferences.isLogin = true
+                    loginPreferences.loginEmail = binding.edtEmail.text.toString()
+                    val toHomeFragment = LoginFragmentDirections.actionLoginFragmentToHomeFragment()
+                    findNavController().navigate(toHomeFragment)
+                }
+            }
         }
     }
 

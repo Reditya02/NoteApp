@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
 import com.example.noteapp.TextMessage
-import com.example.noteapp.data.Note
-import com.example.noteapp.data.NoteAppDatabase
+import com.example.noteapp.data.LoginPreferences
+import com.example.noteapp.data.model.Note
 import com.example.noteapp.databinding.FragmentDetailBinding
 import com.example.noteapp.ui.ViewModelFactory
 
@@ -21,6 +21,8 @@ class DetailFragment : Fragment() {
     private lateinit var note: Note
 
     private lateinit var viewModel: DetailViewModel
+
+    private lateinit var loginPreferences: LoginPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +36,7 @@ class DetailFragment : Fragment() {
         // Inflate the layout for this fragment
 
         val application = requireNotNull(this.activity).application
-        val dao = NoteAppDatabase.getDatabase(application).noteDao()
-        val factory = ViewModelFactory(dao)
+        val factory = ViewModelFactory(application)
 
         viewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
 
@@ -47,6 +48,8 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         note = DetailFragmentArgs.fromBundle(arguments as Bundle).note
 
+        loginPreferences = LoginPreferences(requireContext())
+
         binding.apply {
             edtTitle.setText(note.title)
             edtDescription.setText(note.description)
@@ -56,7 +59,8 @@ class DetailFragment : Fragment() {
                     note = Note(
                         id = note.id,
                         title = edtTitle.text.toString(),
-                        description = edtDescription.text.toString()
+                        description = edtDescription.text.toString(),
+                        ownerEmail = loginPreferences.loginEmail
                     )
 
                     editNote(note)

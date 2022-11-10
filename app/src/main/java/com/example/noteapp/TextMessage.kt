@@ -3,6 +3,6 @@ package com.example.noteapp
 enum class TextMessage {
     Ok,
     TextEmpty,
-    EmailFormatInvalid,
-    PasswordTooShort, PasswordNotMatch
+    EmailFormatInvalid, EmailNotRegistered, EmailAlreadyRegistered,
+    PasswordTooShort, PasswordNotMatch, WrongPassword
 }

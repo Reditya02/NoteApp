@@ -53,6 +53,6 @@
         tools:layout="@layout/fragment_detail" >
         <argument
             android:name="note"
-            app:argType="com.example.noteapp.data.Note" />
+            app:argType="com.example.noteapp.data.model.Note" />
     </fragment>
 </navigation>

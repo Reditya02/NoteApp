@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.TextMessage
-import com.example.noteapp.data.Note
-import com.example.noteapp.data.NoteAppDatabase
+import com.example.noteapp.data.LoginPreferences
+import com.example.noteapp.data.model.Note
 import com.example.noteapp.databinding.FragmentAddBinding
 import com.example.noteapp.ui.ViewModelFactory
 
@@ -21,6 +21,9 @@ class AddFragment : Fragment() {
 
     private lateinit var viewModel: AddViewModel
 
+    private lateinit var loginPreferences: LoginPreferences
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,8 +31,7 @@ class AddFragment : Fragment() {
         // Inflate the layout for this fragment
 
         val application = requireNotNull(this.activity).application
-        val dao = NoteAppDatabase.getDatabase(application).noteDao()
-        val factory = ViewModelFactory(dao)
+        val factory = ViewModelFactory(application)
 
         viewModel = ViewModelProvider(this, factory)[AddViewModel::class.java]
 
@@ -40,12 +42,15 @@ class AddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loginPreferences = LoginPreferences(requireContext())
+
         binding.apply {
             btnSave.setOnClickListener {
                 if (checkInput()) {
                     val note = Note(
                         title = edtTitle.text.toString(),
-                        description = edtDescription.text.toString()
+                        description = edtDescription.text.toString(),
+                        ownerEmail = loginPreferences.loginEmail
                     )
 
                     saveNote(note)

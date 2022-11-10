@@ -2,31 +2,41 @@ package com.example.noteapp.ui.register
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.TextMessage
+import com.example.noteapp.data.model.User
 import com.example.noteapp.databinding.FragmentRegisterBinding
+import com.example.noteapp.ui.ViewModelFactory
 
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: RegisterViewModel by viewModels()
+    private lateinit var viewModel: RegisterViewModel
 
     private var isEmailValid = false
     private var isPasswordValid = false
     private var isRetypePasswordValid = false
+
+    private var user = User()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
+
+        val application = requireNotNull(this.activity).application
+        val factory = ViewModelFactory(application)
+
+        viewModel = ViewModelProvider(this, factory)[RegisterViewModel::class.java]
+
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -97,8 +107,19 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    private fun createUser() {
+        binding.apply {
+            user.apply {
+                email = edtEmail.text.toString()
+                password = edtPassword.text.toString()
+            }
+        }
+    }
+
     private fun register() {
+        createUser()
         if (isEmailValid && isPasswordValid && isRetypePasswordValid) {
+            viewModel.register(user)
             val toLoginFragment = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
             findNavController().navigate(toLoginFragment)
         }

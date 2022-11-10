@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import com.example.noteapp.TextChecker
 import com.example.noteapp.TextChecker.checkPasswordRetype
 import com.example.noteapp.TextMessage
+import com.example.noteapp.data.Repository
+import com.example.noteapp.data.model.User
 
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel(private val repository: Repository) : ViewModel() {
     private val _edtEmailResponse = MutableLiveData<TextMessage>()
     val edtEmailResponse: LiveData<TextMessage> = _edtEmailResponse
 
@@ -27,5 +29,9 @@ class RegisterViewModel : ViewModel() {
 
     fun checkEdtRetypePassword(password: String, retypePassword: String) {
         _edtRetypePasswordResponse.value = checkPasswordRetype(password, retypePassword)
+    }
+
+    fun register(user: User) {
+        repository.register(user)
     }
 }
